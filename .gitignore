@@ -1,0 +1,6 @@
+/secrets
+*.tfvars
+*.tfstate
+*.tfstate.backup
+.terraform/
+.DS_Store

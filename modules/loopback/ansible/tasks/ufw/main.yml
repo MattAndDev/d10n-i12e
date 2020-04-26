@@ -1,0 +1,22 @@
+- name: ufw install
+  apt:
+    name: ufw
+- name: "ufw: enable"
+  ufw:
+    state: enabled
+- name: "ufw: allow 4242"
+  ufw:
+    rule: allow
+    port: "4242"
+- name: "ufw: deny OpenSSH"
+  ufw:
+    rule: deny
+    name: OpenSSH
+- name: "ufw: allow http"
+  ufw:
+    rule: allow
+    port: "80"
+- name: "ufw: allow https"
+  ufw:
+    rule: allow
+    port: "443"

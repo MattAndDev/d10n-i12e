@@ -1,0 +1,78 @@
+- hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: apt dist-upgrade
+      apt:
+        upgrade: dist
+
+    - name: apt update
+      apt:
+        name: "*"
+        state: latest
+
+    - name: Install socat
+      apt:
+        name: socat
+
+    - name: Setup ufw
+      import_tasks: "{{ playbook_dir }}/tasks/ufw/main.yml"
+
+    - name: "ufw: allow 4141"
+      ufw:
+        rule: allow
+        port: "4141"
+
+    - name: Add {{ user }} and {{ group }}
+      import_tasks: "{{ playbook_dir }}/tasks/user-and-group/main.yml"
+      vars:
+        user: "{{ user }}"
+        group: "{{ group }}"
+
+    - name: Copy authorized keys to {{ user }}
+      command: cp -r /root/.ssh /home/{{user}}
+
+    - name: Make {{ user }}:{{ group }} owner of ssh
+      command: chown -R {{ user }}:{{ group }} /home/{{user}}/.ssh
+
+    - name: Secure ssh
+      import_tasks: "{{ playbook_dir }}/tasks/secure-ssh/main.yml"
+
+    - name: populate /etc/environment
+      lineinfile:
+        dest: "/etc/environment"
+        state: present
+        regexp: "^LOOPBACK_IPV6="
+        line: "LOOPBACK_IPV6={{ ipv6_target }}"
+
+    - name: copy loopback services
+      copy:
+        src: ./templates/{{ item }}
+        dest: /etc/systemd/system/{{ item }}
+        owner: root
+        group: root
+        mode: 0715
+      loop:
+        - loopback-80.service
+        - loopback-443.service
+        - loopback-4141-4242.service
+
+    - name: start loopback services
+      service:
+        name: "{{ item }}"
+        state: started
+      loop:
+        - loopback-80.service
+        - loopback-443.service
+        - loopback-4141-4242.service
+
+    - name: Install oh-my-zsh
+      import_tasks: "{{ playbook_dir }}/tasks/oh-my-zsh/main.yml"
+      vars:
+        user: "{{ user }}"
+
+    - name: Remove provision public key
+      authorized_key:
+        user: "{{ user }}"
+        state: absent
+        key: "{{ provision_pub_key }}"

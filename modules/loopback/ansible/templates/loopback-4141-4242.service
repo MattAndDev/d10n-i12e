@@ -1,0 +1,10 @@
+[Unit]
+Description=Loopback 4141 to remote 4242
+
+[Service]
+EnvironmentFile=/etc/environment
+ExecStart=/usr/bin/socat TCP-LISTEN:4141,fork TCP6:[${LOOPBACK_IPV6}]:4242
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
