@@ -1,5 +1,5 @@
-# d10n i12e
+# d10n-i12e
 
-personal  d(igitalocea)ncloud i(infrastructur)e with terraform
+personal  d(igitalocea)n cloud i(infrastructur)e with terraform
 
 

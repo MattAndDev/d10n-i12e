@@ -9,5 +9,5 @@ resource "tls_private_key" "provision_keypair" {
 
 resource "digitalocean_ssh_key" "do_provision_key" {
   name       = "do_provision_key"
-  public_key = "${tls_private_key.provision_keypair.public_key_openssh}"
+  public_key = tls_private_key.provision_keypair.public_key_openssh
 }

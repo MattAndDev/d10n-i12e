@@ -35,7 +35,7 @@ locals {
 }
 
 resource "local_file" "loopback_id_rsa_local" {
-  content         = "${var.provision_private_key}"
+  content         = var.provision_private_key
   filename        = "${path.module}/ansible/id_rsa"
   file_permission = "0700"
 }

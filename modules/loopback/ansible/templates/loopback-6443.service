@@ -1,0 +1,10 @@
+[Unit]
+Description=Loopback 6443 to remote
+
+[Service]
+EnvironmentFile=/etc/environment
+ExecStart=/usr/bin/socat TCP6-LISTEN:6443,fork TCP6:[${LOOPBACK_IPV6}]:6443
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

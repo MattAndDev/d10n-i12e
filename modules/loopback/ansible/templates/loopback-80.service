@@ -3,7 +3,7 @@ Description=Loopback 80 to remote
 
 [Service]
 EnvironmentFile=/etc/environment
-ExecStart=/usr/bin/socat TCP-LISTEN:80,fork TCP6:[${LOOPBACK_IPV6}]:80
+ExecStart=/usr/bin/socat TCP6-LISTEN:80,fork TCP6:[${LOOPBACK_IPV6}]:80
 Restart=always
 
 [Install]

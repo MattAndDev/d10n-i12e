@@ -20,6 +20,7 @@ terraform {
     skip_metadata_api_check     = true
     # unused just to skip validation
     region = "eu-west-1"
+    bucket="do-terraform-backend"
   }
 }
 
