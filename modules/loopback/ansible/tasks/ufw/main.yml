@@ -8,6 +8,17 @@
   ufw:
     rule: allow
     port: "4242"
+
+- name: "ufw: allow 4141"
+  ufw:
+    rule: allow
+    port: "4141"
+
+- name: "ufw: allow 6443"
+  ufw:
+    rule: allow
+    port: "4141"
+
 - name: "ufw: deny OpenSSH"
   ufw:
     rule: deny
